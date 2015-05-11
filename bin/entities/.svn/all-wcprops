@@ -1,0 +1,95 @@
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/!svn/ver/71/trunk/src/entities
+END
+Wall.java
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/73/trunk/src/entities/Wall.java
+END
+Snake.java
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/73/trunk/src/entities/Snake.java
+END
+Golem.java
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/73/trunk/src/entities/Golem.java
+END
+StrengthBonus.java
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/73/trunk/src/entities/StrengthBonus.java
+END
+Dragon.java
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/73/trunk/src/entities/Dragon.java
+END
+HealthBonus.java
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/73/trunk/src/entities/HealthBonus.java
+END
+Enemy.java
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/73/trunk/src/entities/Enemy.java
+END
+OutOfBoardException.java
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/73/trunk/src/entities/OutOfBoardException.java
+END
+Bonus.java
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/73/trunk/src/entities/Bonus.java
+END
+Board.java
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/72/trunk/src/entities/Board.java
+END
+Vector2D.java
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/74/trunk/src/entities/Vector2D.java
+END
+Character.java
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/73/trunk/src/entities/Character.java
+END
+Player.java
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/73/trunk/src/entities/Player.java
+END
+InvalidLevelException.java
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/73/trunk/src/entities/InvalidLevelException.java
+END
+GameEvents.java
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/73/trunk/src/entities/GameEvents.java
+END

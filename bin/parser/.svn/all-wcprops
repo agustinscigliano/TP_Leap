@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 33
+/svn/!svn/ver/70/trunk/src/parser
+END
+ErrorReadingPlayer.java
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/48/trunk/src/parser/ErrorReadingPlayer.java
+END
+ErrorReadingEnemy.java
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/72/trunk/src/parser/ErrorReadingEnemy.java
+END
+ErrorReadingWall.java
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/48/trunk/src/parser/ErrorReadingWall.java
+END
+ReadMapName.java
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/72/trunk/src/parser/ReadMapName.java
+END
+ErrorReadingBonus.java
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/72/trunk/src/parser/ErrorReadingBonus.java
+END
+CellIsNotEmpty.java
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/48/trunk/src/parser/CellIsNotEmpty.java
+END
+Parser.java
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/72/trunk/src/parser/Parser.java
+END
+FileException.java
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/48/trunk/src/parser/FileException.java
+END

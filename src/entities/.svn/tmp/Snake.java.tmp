@@ -1,0 +1,27 @@
+package entities;
+
+public class Snake extends Enemy{
+<<<<<<< .mine
+    public Snake(int level) throws InvalidLevelException{
+        setLevel(level);
+=======
+    public Snake(int level) throws InvalidLevelException{
+        super(level);
+>>>>>>> .r71
+        setName("Snake");
+        setAttributeConstants(1.0, 1.0);
+        reset();
+    }
+    
+    @Override
+    public int getFileDescription() {
+            return super.getFileDescription();
+    }
+
+    public int getEnemyType() {
+            return 3;
+    }
+    public int getLevel(){
+    	return this.level;
+    }
+}

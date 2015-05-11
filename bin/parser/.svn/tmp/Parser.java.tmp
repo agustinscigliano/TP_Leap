@@ -1,0 +1,287 @@
+package parser;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+import entities.*;
+
+
+public class Parser{
+
+	private BufferedReader inStream = null;
+	private String line;
+	private final int PLAYER = 1;
+	private final int WALL = 2;
+	private final int ENEMY = 3;
+	private final int BHEALTH = 4;
+	private final int BSTRENGTH = 5;
+	
+	public Parser(String inName) throws FileNotFoundException {
+		inStream = new BufferedReader(new FileReader(inName));
+	}
+	
+	public void checkFile(Board board) throws IOException, FileException, 
+		CellIsNotEmpty, ErrorReadingWall, ErrorReadingPlayer {		
+		
+		try {
+			if(!eraseEmptyLine()) {
+				throw new FileException("Invalid file");
+			}
+			checkBoard(board);
+			if(!eraseEmptyLine()) {
+				throw new FileException("Invalid file");
+			}
+			while(line != null) {
+				checkComment(line.charAt(0));
+				if(line != null){
+                    checkTypeCell(board);
+                    System.out.println(line);
+                    eraseEmptyLine();
+                 }
+			}
+		}
+		finally {
+			if(inStream != null) {
+				inStream.close();
+			}
+		}
+	}
+	
+	private boolean eraseEmptyLine() throws IOException{
+		int aux;
+		
+		line = inStream.readLine();
+
+		if(line != null){
+			line = line.trim();
+			aux = line.compareTo("");
+			if(aux == 0) {
+				eraseEmptyLine();
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	private void checkBoard(Board board) throws IOException, FileException{
+		
+		
+		checkRowsAndCols(board);
+		if(!eraseEmptyLine()) {
+			throw new FileException("Invalid file");
+		}
+		checkBoardName(board);
+	}
+	
+	private void checkRowsAndCols(Board board) throws IOException, FileException {
+		String[] argToCheck;
+		int rows, cols;
+		
+		rows = 0;
+		cols = 0;
+		
+		if(!checkComment(line.charAt(0))) {
+			argToCheck = line.split(",");
+			if(argToCheck.length > 2) {
+				if(!checkComment(argToCheck[2].charAt(0))) {
+					throw new FileException("Invalid file");
+				}
+			}
+			argToCheck[0] = argToCheck[0].trim();
+			argToCheck[1] = argToCheck[1].trim();
+			rows = checkRow(argToCheck[1]);
+			cols = checkCol(argToCheck[0]);
+
+			board.setDimension(new Position(cols, rows));
+		}
+		else {
+			checkRowsAndCols(board);
+		}
+	}
+	
+	private int checkRow(String arg) throws FileException {
+		int rows;
+		
+		rows = Integer.parseInt(arg);
+		if(rows < 6 || rows > 30) {
+			throw new FileException("Invalid file");
+		}
+		return rows;
+	}
+	
+	private int checkCol(String arg) throws FileException {
+		int cols;
+		
+		cols = Integer.parseInt(arg);
+		if(cols < 6 || cols > 30) {
+			throw new FileException("Invalid file");
+		}
+		return cols;
+	}
+	
+ 	private void checkBoardName(Board board) throws IOException, FileException {
+		int index;
+		
+		index = line.indexOf("#");
+		if(index != -1) {
+			if(index == 0) {
+				if(!eraseEmptyLine()) {
+					throw new FileException("Invalid file");
+				}
+				checkBoardName(board);
+				
+			}
+			else {
+				 board.setName(line.substring(0, index));
+			}
+		}
+		else {
+			board.setName(line);
+		}
+	}
+	
+	private boolean checkComment(int character) throws IOException, FileException {
+		if(character == '#') {
+			eraseEmptyLine();
+			return true;
+		}
+		return false;
+	}
+	
+	private void checkTypeCell(Board board) throws IOException, FileException, 
+		CellIsNotEmpty, ErrorReadingWall, ErrorReadingPlayer {
+		String[] argToCheck;
+		int typeCell, x, y, enemyType, enemyLv, value, index;
+		
+		if(!checkComment(line.charAt(0))){
+			argToCheck = line.split(",");
+			if(argToCheck.length > 6) {
+				if(!checkComment(argToCheck[6].charAt(0))) {
+					throw new FileException("Invalid file");
+				}
+			}
+			else if(argToCheck.length < 5) {
+				throw new FileException("Invalid file");
+			}
+			index = argToCheck[5].indexOf("#");
+			if(index > 0) {
+				argToCheck[5] = argToCheck[5].substring(0, index);
+			}
+			else if(index == 0) {
+				throw new FileException("Invalid file");
+			}
+			for(int i = 0; i < 6; i++) {
+				argToCheck[i] = argToCheck[i].trim();
+			}
+			typeCell = Integer.parseInt(argToCheck[0]);
+			x = Integer.parseInt(argToCheck[1]);
+			y = Integer.parseInt(argToCheck[2]);
+			enemyType = Integer.parseInt(argToCheck[3]);
+			enemyLv = Integer.parseInt(argToCheck[4]);			
+			
+			value = Integer.parseInt(argToCheck[5]);
+			switch (typeCell) {
+			case PLAYER:
+				checkPlayer(x, y, enemyType, enemyLv, value, board);
+				break;
+			case WALL:
+				checkWall(x, y, enemyType, enemyLv, value, board);
+				break;
+			case ENEMY:           
+				checkEnemy(x, y, enemyType, enemyLv, value, board);
+                 System.out.println("again");
+				break;
+			case BHEALTH:
+				checkBHealth(x, y, enemyType, enemyLv, value, board);
+				break;
+			case BSTRENGTH:
+				checkBStrength(x, y, enemyType, enemyLv, value, board);
+				break;
+			default:
+				//throw new FileException("Invalid file");
+			}
+		}
+	}
+	
+	private void checkPosition(int x, int y, Board board) throws FileException, CellIsNotEmpty {
+		if(x < 0 || x > board.getRow())
+			throw new FileException("Invalid file");
+		if(y < 0 ||  y > board.getCol())
+			throw new FileException("Invalid file");
+		checkEmptyCell(x, y, board);
+	}
+	
+	private void checkWall(int x, int y, int enemyType, int enemyLv, int value, Board board) 
+		throws FileException, CellIsNotEmpty, ErrorReadingWall{
+		
+		checkPosition(x, y, board);
+		if(enemyLv != 0 || enemyType != 0 || value != 0) {
+			throw new ErrorReadingWall("Error reading the wall parameter");
+		}
+		
+		board.addWall(new Wall(), new Position(x,y));
+		
+	}
+	
+	private void checkPlayer(int x, int y, int enemyType, int enemyLv, int value, Board board) throws FileException, 
+		CellIsNotEmpty, ErrorReadingPlayer {
+		checkPosition(x, y, board);
+		if(enemyLv != 0 || enemyType != 0 || value != 0) {
+			throw new ErrorReadingPlayer("Error reading the player parameter");
+		}
+		board.add(new Player(x, y));
+	}
+	
+	private void checkEmptyCell(int x, int y, Board board) throws CellIsNotEmpty {
+		if(!board.emptyCell(new Position(x, y))) {
+            throw new CellIsNotEmpty("This cell is not empty");
+        }
+
+			
+	}
+	
+	private void checkEnemy(int x, int y, int enemyType, int enemyLv, int value, Board board) throws FileException, 
+		CellIsNotEmpty {
+			checkPosition(x, y, board);
+			switch (enemyType) {
+				case 1:
+					if(enemyLv > 3 || enemyLv < 1 || value != 0) {
+						throw new FileException("Invalid file");
+					}
+					board.addEnemy(new Golem(enemyLv), new Position(x,y));
+					break;
+				case 2:
+					if(enemyLv > 3 || enemyLv < 1 || value != 0) {
+						throw new FileException("Invalid file");
+					}
+					board.addEnemy(new Dragon(enemyLv), new Position(x, y));
+					break;
+				case 3:
+					if(enemyLv > 3 || enemyLv < 1 || value != 0) {
+						throw new FileException("Invalid file");
+					}
+					board.addEnemy(new Snake(enemyLv), new Position(x, y));
+					break;
+				default:
+					throw new FileException("Invalid file");
+			}
+	}
+
+	private void checkBHealth(int x, int y, int enemyType, int enemyLv, int value, Board board) throws FileException, 
+		CellIsNotEmpty {
+		checkPosition(x, y, board);
+		if(value < 0 || enemyType != 0 || enemyLv != 0)
+			throw new FileException("Invalid file");
+		board.addBonus(new HealthBonus(value), new Position(x, y));
+	}
+	
+	private void checkBStrength(int x, int y, int enemyType, int enemyLv, int value, Board board) throws FileException, 
+	CellIsNotEmpty {
+		checkPosition(x, y, board);
+		if(value < 0 || enemyType != 0 || enemyLv != 0)
+			throw new FileException("Invalid file");
+		board.addBonus(new StrengthBonus(value), new Position(x, y));
+	}
+}

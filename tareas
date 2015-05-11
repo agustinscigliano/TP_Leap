@@ -1,0 +1,7 @@
+cuando pones cancelar en el save, te guarda una partida con nombre null
+
+mostrar info de enemigos cuando te paras al lado
+
+a veces al tocar cancel en save, vuelve a aparecer la ventana de guardar
+
+chequear que en algunos metodos se imprimen cosas, borrarlas

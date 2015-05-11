@@ -1,0 +1,121 @@
+package entities;
+
+/**
+ * Contains the Player attibutes and methods.
+ * @author mpurita, gdelgiud, ppauli
+ *
+ */
+public class Player extends Character{
+
+    private int experience;
+    private int next_level;
+    private int bonus_strength;
+
+    private Vector2D initial;
+    private Vector2D current;
+
+     /**
+     * Constructs a Player on the Position desired.
+     * @param x - x position
+     * @param y - y position
+     */
+    public Player(int x, int y) {
+        initial = new Vector2D(x,y);
+        reset();
+    }
+
+    /**
+     * Calculates Player attributes depending on the actual level.
+     */
+    public void calculateAttributes(){
+        max_health = (level * 10);
+        strength = level * 5;
+        next_level = level * 5;
+    }
+
+    /**
+     * Increases character's strength.
+     * @param power Specifies the amount of Strength points granted.
+     */
+    public void toughen(int power){
+        if(power > 0)
+        this.bonus_strength += power;
+    }
+
+    /**
+     * Sets Player attributes with his initial stats.
+     */
+    @Override
+    public void reset(){
+        level = 1;
+        bonus_strength = 0;
+        experience = 0;
+        current = initial;
+        super.reset();
+    }
+    
+    /**
+     * Moves the player to the desired position.
+     */
+    public void move(int x, int y){
+        current = new Vector2D(x,y);
+    }
+    
+      /**
+     * Grants the player experience points. If the level cap was reached
+     * this call is ignored.
+     * @return true If the Player leveled up in the transaction.
+     */
+    public boolean earnExperience(int experience){
+        this.experience += experience;
+        if(this.experience >= next_level){
+            this.experience -= level * 5;
+            try{
+                setLevel(level + 1);
+                return true;
+            }
+            catch(InvalidLevelException e){
+                this.experience = level * 5;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Player fights with an Enemy
+     * @param e - an Enemy
+     */
+    public void fight(Enemy e){
+        if(!this.damage(e.getStrength())){
+            if(e.damage(this.getStrength())){
+                this.earnExperience(e.getLevel());
+            }
+        }
+    }
+
+    @Override
+    public int getStrength(){
+        return super.getStrength() + bonus_strength;
+    }
+    public int getExp() {
+    	return this.experience;
+    }
+    
+    public Vector2D getPosition() {
+    	return current;
+    }
+
+    public void pickUp(Bonus bonus) {
+        if(!bonus.wasPicked())
+        bonus.pickUp(this);
+    }
+    
+    public int getMaxExp() {
+        return next_level;
+    }
+    public void setExp(int exp) {
+        this.experience = exp;
+    }
+
+    
+}

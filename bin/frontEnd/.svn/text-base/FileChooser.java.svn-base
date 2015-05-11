@@ -1,0 +1,17 @@
+package frontEnd;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+
+public class FileChooser {
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				ImageViewerFrame frame = new ImageViewerFrame();
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				frame.setVisible(true);
+			}
+		});
+	}
+}	

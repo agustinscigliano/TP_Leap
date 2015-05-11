@@ -1,0 +1,55 @@
+10
+
+dir
+71
+https://tpdepoo2011.googlecode.com/svn/trunk/src
+https://tpdepoo2011.googlecode.com/svn
+
+
+
+2011-06-06T13:13:28.433702Z
+71
+g.delgiudice89@gmail.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+34261449-c496-e7b0-0188-421c2a6a70b2
+
+
+
+
+
+
+
+
+((conflict boards dir update deleted deleted (version https://tpdepoo2011.googlecode.com/svn 2 68 trunk/src/boards dir) (version https://tpdepoo2011.googlecode.com/svn 2 71 trunk/src/boards none)))
+
+frontEnd
+dir
+
+Tests
+dir
+
+entities
+dir
+
+images
+dir
+
+resources
+dir
+
+parser
+dir
+

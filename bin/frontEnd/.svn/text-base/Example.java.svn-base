@@ -1,0 +1,12 @@
+package frontEnd;
+
+import javax.swing.JFrame;
+
+public class Example {
+
+	public static void main(String[] args) {
+		ExampleFrame frame = new ExampleFrame();
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+	}
+}

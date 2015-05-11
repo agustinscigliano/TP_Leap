@@ -1,0 +1,112 @@
+package entities;
+/**
+ * Contains the characteristics and methods that the player and
+ * the enemies have in common.
+ *
+ * @author mpurita, gdelgiud, ppauli
+ *
+ */
+public abstract class Character{
+    protected int max_health;
+    protected int health;
+    protected int level;
+    protected int strength;
+    protected int x;
+    protected int y;
+    protected String characterName;
+
+    boolean dead;
+
+    /**
+     * Sets attributes based on desired formula.
+     */
+    public abstract void calculateAttributes();
+
+    /**
+     * Sends the character to it's initial state. Revives it if need be. Does not reset level.
+     */
+    public void reset(){
+        calculateAttributes();
+        dead = false;
+        heal(max_health);
+    }
+ 
+
+    /**
+     * Replenishes character's health.
+     * @param power Specifies the amount of restored hit points.
+     */
+    public void heal(int power){
+        health += power;
+        
+        if( health > max_health ){
+            health = max_health;
+        }
+    }
+
+    /**
+     * Causes damage to the character. Kills it if it's health is too low.
+     * @param power Specifies the amount of damage taken.
+     * @return true If the character died from the attack.
+     */
+    public boolean damage(int power){
+        if(power >= health){
+            kill();
+        }
+        else{
+            health -= power;
+        }
+
+        return dead;
+    }
+
+    public void kill(){
+        health = 0;
+        dead = true;
+    }
+
+    /**
+     * Sets the level of the Character. Then Characters attributes are
+     * set according to the Character level.
+     * @param level - level of the Characer
+     * @throws InvalidLevelException
+     */
+    public void setLevel(int level) throws InvalidLevelException{
+        if( level < 1){
+            throw new InvalidLevelException("Level lower than 1");
+        }
+        else if(level > 3){
+            throw new InvalidLevelException("Level higher than level cap");
+        }
+        this.level = level;
+        calculateAttributes();
+    }
+
+    public boolean isDead(){
+        return dead;
+    }
+
+    public int getMaxHealth(){
+        return max_health;
+    }
+
+    public int getStrength(){
+        return strength;
+    }
+
+    public int getHealth(){
+        return health;
+    }
+
+    public int getLevel(){
+        return level;
+    }
+
+    public void setName(String name){
+        this.characterName = name;
+    }
+
+    public String getName(){
+        return characterName;
+    }
+}

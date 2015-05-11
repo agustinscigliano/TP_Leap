@@ -1,0 +1,32 @@
+package frontEnd;
+
+import java.io.FileInputStream;
+import java.io.InputStream;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+
+public class Sound {
+
+    public static void play(String filename){
+        InputStream in = null;
+        AudioStream as = null;
+        //** add this into your application code as appropriate
+        // Open an input stream  to the audio file.
+        try{
+        in = new FileInputStream(filename);
+
+        // Create an AudioStream object from the input stream.
+        as = new AudioStream(in);
+
+        }catch(Exception e){
+            System.out.println("ASDASDASD");
+        }
+
+        // Use the static class member "player" from class AudioPlayer to play
+        // clip.
+        AudioPlayer.player.start(as);
+
+        // Similarly, to stop the audio.
+        //AudioPlayer.player.stop(as);
+    }
+}

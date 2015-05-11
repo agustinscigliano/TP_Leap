@@ -1,0 +1,22 @@
+package entities;
+
+/**
+ * Allows the Player to interact with any Entity on the map whilst decoupling it
+ * from the implementation of Entity.
+ * @author gdelgiud
+ */
+public interface Collidable{
+
+    /**
+     * Executes corresponding actions when the Player steps into this object
+     * @param player Reference to the Player colliding with this object
+     * @return true If the player can walk over the object
+     * @return false If the object is solid
+     */
+    public boolean collide(Player player);
+    /**
+     * Used by the SaveFile parser.
+     * @author mpurita
+     */
+    public int getFileDescription();
+}

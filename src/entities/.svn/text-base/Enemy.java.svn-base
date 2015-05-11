@@ -1,0 +1,52 @@
+package entities;
+
+/**
+ * Contains the information enemies have in common.
+ * @author mpurita, gdelgiud, ppauli
+ */
+public abstract class Enemy extends Character{
+    private double s;
+    private double f;
+
+
+    public Enemy(int level) throws InvalidLevelException{
+	setLevel(level);
+    }
+
+    /**
+     * Fights with the Player
+     * @return false If the Entity is solid.
+     * @return true if the Player can walk over the Entity.
+     * @author ppauli,mpurita,gdelgiud
+     */
+    public boolean collide(Player player){
+        if(player.damage(strength) == false){
+            damage(player.getStrength());
+        }
+        return false;
+    }
+
+    /**
+     * Sets the constants used to calculate attributed, defined in each kind of enemy.
+     * @param s Health constant.
+     * @param f Strength constant.
+     */
+    protected void setAttributeConstants(double s, double f){
+        this.s = s;
+        this.f = f;
+    }
+
+    /**
+     * Calculates the enemy's max health and strenght depending on its level
+     */
+    public void calculateAttributes(){
+        max_health = (int)Math.floor((Math.pow(level + 3, 2) - 10) * s);
+        strength = (int)Math.floor((Math.pow(level,2) + level * 5) * 0.5 * f);
+    }
+
+    public int getFileDescription() {
+    	return 3;
+    }
+    
+    public abstract int getEnemyType();
+}

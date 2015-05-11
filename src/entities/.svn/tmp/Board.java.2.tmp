@@ -1,0 +1,280 @@
+package entities;
+
+import java.util.HashMap;
+import java.util.Set;
+
+
+public class Board {
+
+	private HashMap<Position, Enemy> enemyMap;
+	private HashMap<Position, Bonus> bonusMap;
+	private HashMap<Position, Wall> wallMap;
+	private Position dimension;
+	private Player hero;
+	private String name;
+        private GameEvents events = null;
+        private boolean cells[][];
+	
+	public Board(){
+		enemyMap = new HashMap<Position, Enemy>();
+		bonusMap = new HashMap<Position, Bonus>();
+		wallMap = new HashMap<Position, Wall>();
+	}
+
+	public void setDimension(Position size) {
+		this.dimension = size;
+                cells = new boolean[dimension.y()][dimension.x()];
+	}
+
+        public Position getDimension(){
+            return dimension;
+        }
+
+	public int getRow() {
+		return dimension.x();
+	}
+
+	public int getCol() {
+		return dimension.y();
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+        /**
+         * Spawns an Enemy in the board.
+         */
+	public void add(Enemy value, Position key) throws OutOfBoardException{
+            if(validPosition(key)){
+                throw new OutOfBoardException();
+            }
+            this.enemyMap.put(key, value);
+	}
+
+        /**
+         * Spawns a Bonus in the board.
+         */
+	public void add(Bonus value, Position key) throws OutOfBoardException{
+            if(validPosition(key)){
+                throw new OutOfBoardException();
+            }
+            this.bonusMap.put(key, value);
+	}
+
+        /**
+         * Spawns a Wall in the board.
+         */
+	public void add(Wall value, Position key) throws OutOfBoardException{
+            if(validPosition(key)){
+                System.out.println(key.x() + " " + key.y());
+                throw new OutOfBoardException();
+            }
+            this.wallMap.put(key, value);
+	}
+
+        /**
+         * Spawns the Player in the board.
+         */
+	public void add(Player hero) throws OutOfBoardException{
+            if( hero != null){
+                if(validPosition(hero.getPosition())){
+                    throw new OutOfBoardException();
+                }
+                this.hero = hero;
+                revealSurroundingCells();
+            }
+	}
+
+        private boolean validPosition(Position p){
+            return (p.x() < 0 || p.x() >= getRow() || p.y() < 0 || p.y() >= getCol());
+        }
+
+	public boolean emptyCell(Position position) {
+		if(!enemyMap.containsKey(position) && !bonusMap.containsKey(position) 
+				&& !wallMap.containsKey(position)) {
+			return true;
+		}
+		return false;
+	}
+
+	public Enemy getEnemy(Position key) {
+		return (Enemy) this.enemyMap.get(key);
+	}
+
+	public Wall getWall(Position key) {
+		return (Wall) this.wallMap.get(key);
+	}
+
+	public Bonus getBonus(Position key) {
+		return (Bonus) this.bonusMap.get(key);
+	}
+
+	public Set<Position> allEnemiesKeys() {
+		return this.enemyMap.keySet();
+	}
+
+	public Set<Position> allWallsKeys() {
+		return this.wallMap.keySet();
+	}
+
+	public Set<Position> allBonusKeys() {
+		return this.bonusMap.keySet();
+	}
+
+	public Player getPlayer() {
+		return hero;
+	}
+        
+        public void movePlayerWest(){
+            int y = getPlayer().getPosition().y() - 1;
+            int x = getPlayer().getPosition().x();
+            if(y >= 0)
+            movePlayer(new Position(x,y));
+        }
+        
+        public void movePlayerEast(){
+            int y = getPlayer().getPosition().y() + 1;
+            int x = getPlayer().getPosition().x();
+            if(y < getCol())
+            movePlayer(new Position(x,y));
+        }
+        
+        public void movePlayerNorth(){
+            int y = getPlayer().getPosition().y();
+            int x = getPlayer().getPosition().x() - 1;
+            if(x >= 0)
+            movePlayer(new Position(x,y));
+        }
+        
+                
+        public void movePlayerSouth(){
+            int y = getPlayer().getPosition().y();
+            int x = getPlayer().getPosition().x() + 1;
+            if(x < getRow())
+            movePlayer(new Position(x,y));
+        }
+        
+        private void movePlayer(Position p){
+            if(collidePlayer(p) && !getPlayer().isDead()){
+                getPlayer().move(p.x(),p.y());
+                revealSurroundingCells();
+            }
+        }
+        
+        public boolean collidePlayer(Position p){
+            /*Fight enemy?*/
+            if(getEnemy(p) != null && !getEnemy(p).isDead()){
+                int prev_lvl = getPlayer().getLevel();
+                getPlayer().fight(getEnemy(p));
+                if(events != null){
+                    events.onEnemyFight(getEnemy(p));
+                    setActiveEnemy(getEnemy(p));
+                    if(getPlayer().isDead()){
+                        events.onPlayerDeath(getPlayer());
+                    }
+                    else if(getEnemy(p).isDead()){
+                        events.onEnemyDeath(getEnemy(p));
+                    }
+                }
+                if(getPlayer().getLevel() != prev_lvl && events != null){
+                    events.onLevelUp(getPlayer().getLevel());
+                }
+                return false;
+            }
+            /*Hit wall?*/
+            else if(getWall(p) != null){
+                return false;
+            }
+            /*Pick bonus?*/
+            else if(getBonus(p) != null){
+                if(!getBonus(p).wasPicked() && events != null){
+                    events.onBonusPickUp(getBonus(p));
+                }
+                getPlayer().pickUp(getBonus(p));
+            }
+            return true;
+        }
+
+        protected void setActiveEnemy(Enemy e){
+            if(this.events != null){
+                events.onChangeEnemy(e);
+            }
+        }
+
+        public void addEventHandler(GameEvents events){
+            this.events = events;
+        }
+
+        public boolean isRevealedCell(Position p){
+            return cells[p.y()][p.x()];
+        }
+
+        /**
+         * Reveals the specified cell.
+         * @return true if the cell wasn't revealed before.
+         */
+        private boolean revealCell(Position p){
+            try{
+                if(!isRevealedCell(p)){
+                    cells[p.y()][p.x()] = true;
+                    return true;
+                }
+            }
+            catch(ArrayIndexOutOfBoundsException e){
+
+            }
+            return false;
+        }
+
+        /**
+         * Reveals the cells surrounding the player
+         */
+        private void revealSurroundingCells(){
+            Position p = getPlayer().getPosition();
+            int revealed_cells = 0;
+            for(int i = -1; i < 2; i++){
+                for(int j = -1; j < 2; j++){
+                    if(revealCell(new Position(p.x() + i, p.y() + j))){
+                        revealed_cells++;
+                    }
+                }
+            }
+            
+            //Heal characters
+            getPlayer().heal(revealed_cells * getPlayer().getLevel());
+            for (Object obj : allEnemiesKeys()){
+                Enemy e = (Enemy)enemyMap.get((Position)obj);
+                e.heal(revealed_cells * e.getLevel());
+            }
+        }
+
+        public void createRevealedCell(Position p, boolean value) {
+            cells[p.y()][p.x()] = value;
+        }
+
+        public void reset(){
+            for(Object obj: allEnemiesKeys()){
+                Position p = (Position)obj;
+                Enemy e = (Enemy)enemyMap.get(p);
+                e.reset();
+            }
+            for(Object obj: allBonusKeys()){
+                Position p = (Position)obj;
+                Bonus b = (Bonus)bonusMap.get(p);
+                b.reset();
+            }
+
+            cells = new boolean[dimension.y()][dimension.x()];
+            if(getPlayer() != null){
+                getPlayer().reset();
+                revealSurroundingCells();
+            }
+
+            setActiveEnemy(null);
+        }
+}
