@@ -3,9 +3,13 @@ package frontEnd;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+
 import javax.swing.*;
 
+import com.leapmotion.leap.Controller;
+
 import parser.*;
+import Leap.LeapaintListener;
 import entities.*;
 import entities.saveAndLoad.Load;
 import entities.saveAndLoad.Save;
@@ -17,8 +21,11 @@ import entities.saveAndLoad.Save;
 public class GamePlay extends JFrame{
 
 
-    private final GraphicBoard gb = new GraphicBoard();
+    public final GraphicBoard gb = new GraphicBoard();
     private StatusPanel sp;
+	public int prevX = -1, prevY = -1;
+	public int x = -1, y = -1;
+	public double z = -1;
 
     /**
      * Generates a new game panel and adds all events for interaction.
@@ -44,6 +51,10 @@ public class GamePlay extends JFrame{
         centerScreen();
         refreshScreen();
         setGameEvents();
+        LeapaintListener listener = new LeapaintListener(this);
+		Controller controller = new Controller();
+		//Start the listener.
+		controller.addListener(listener);
         handleInput();
     }
     
@@ -133,28 +144,28 @@ public class GamePlay extends JFrame{
             mainMenu();
         }
         catch(CellIsNotEmpty e){
-            JOptionPane.showMessageDialog(this, "Ocurrió un error al cargar el mapa. " +
+            JOptionPane.showMessageDialog(this, "Ocurriï¿½ un error al cargar el mapa. " +
                 "Dos objetos se superponen.", "Error", JOptionPane.ERROR_MESSAGE);
             mainMenu();
         }
         catch(ErrorReadingPlayer e){
 
-            JOptionPane.showMessageDialog(this, "Ocurrió un error al cargar el mapa. " +
+            JOptionPane.showMessageDialog(this, "Ocurriï¿½ un error al cargar el mapa. " +
                 "Datos de un personaje invalidos.", "Error", JOptionPane.ERROR_MESSAGE);
             mainMenu();
         }
         catch(ErrorReadingWall e){
-            JOptionPane.showMessageDialog(this, "Ocurrió un error al cargar el mapa. " +
+            JOptionPane.showMessageDialog(this, "Ocurriï¿½ un error al cargar el mapa. " +
                 "Datos de una pared invalidos.", "Error", JOptionPane.ERROR_MESSAGE);
             mainMenu();
         }
         catch(OutOfBoardException e){
-            JOptionPane.showMessageDialog(this, "Ocurrió un error al cargar el mapa. " +
+            JOptionPane.showMessageDialog(this, "Ocurriï¿½ un error al cargar el mapa. " +
                 "Un objeto se encuentra fuera del mapa.", "Error", JOptionPane.ERROR_MESSAGE);
             mainMenu();
         }
         catch(FileException e){
-            JOptionPane.showMessageDialog(this, "Ocurrió un error al cargar el mapa.",
+            JOptionPane.showMessageDialog(this, "Ocurriï¿½ un error al cargar el mapa.",
                 "Error", JOptionPane.ERROR_MESSAGE);
             mainMenu();
         }
@@ -276,7 +287,12 @@ public class GamePlay extends JFrame{
         size.height/2 - getHeight()/2);
     }
 
+    
+    //Aca hay que agregar los gestos
     private void handleInput(){
+    	
+    	
+    	
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(final KeyEvent e) {
@@ -303,7 +319,7 @@ public class GamePlay extends JFrame{
     private void lose(){
         refreshScreen();
         Sound.play(Directories.resources + "Lose.wav");
-        JOptionPane.showMessageDialog(this, "¡¡¡GAME OVER!!!", "Lo siento...", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(this, "ï¿½ï¿½ï¿½GAME OVER!!!", "Lo siento...", JOptionPane.PLAIN_MESSAGE);
 
         mainMenu();
     }
@@ -311,11 +327,11 @@ public class GamePlay extends JFrame{
     private void win(){
         refreshScreen();
         Sound.play(Directories.resources + "Win.wav");
-        JOptionPane.showMessageDialog(this, "¡¡¡GANASTE!!!", "Felicidades", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(this, "ï¿½ï¿½ï¿½GANASTE!!!", "Felicidades", JOptionPane.PLAIN_MESSAGE);
         mainMenu();
     }
 
-    private void refreshScreen(){
+    public void refreshScreen(){
         gb.draw();
         sp.updateStats();
     }
