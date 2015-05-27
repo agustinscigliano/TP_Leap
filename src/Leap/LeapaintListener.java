@@ -1,14 +1,17 @@
 package Leap;
 
 
+import javax.swing.JPanel;
+
 import com.leapmotion.leap.*;
 
+import frontEnd.BackGround;
 import frontEnd.GamePlay;
 
 public class LeapaintListener extends Listener
 {
 	//Leapaint instance.
-	public GamePlay gamePlay;
+	public BackGround back;
 	//Controller data frame.
 	public Frame frame;
 	//Leap interaction box.
@@ -16,10 +19,10 @@ public class LeapaintListener extends Listener
 	//Constructor.
 
 	
-	public LeapaintListener(GamePlay newPaint)
+	public LeapaintListener(BackGround back)
 	{
 		//Assign the Leapaint instance.
-		gamePlay = newPaint;
+		this.back = back;
 	}
 	
 	//Member Function: onInit
@@ -51,6 +54,44 @@ public class LeapaintListener extends Listener
 		//Get the most recent frame.
 		frame = controller.frame();
 		//Detect if fingers are present.
+		//System.out.println("dasd");
+		
+		frame.gestures();
+		
+
+		if (!frame.gestures().isEmpty()) {
+		    for (int i = 0; i < frame.gestures().count(); i++) {
+		      Gesture gesture = frame.gestures().get(i);
+		      System.out.println(gesture.type());
+		      if (gesture.type() == Gesture.Type.TYPE_SWIPE) {
+		    	  SwipeGesture swipeGesture = new SwipeGesture(gesture);
+
+		    	    Vector swipeVector  = swipeGesture.direction();
+		    	    System.out.println("swipeVector : " + swipeVector);
+
+		    	    float swipeDirection = swipeVector.getX();
+		    	    System.out.println(swipeDirection);
+		    	    
+		          //Classify swipe as either horizontal or vertical
+		          boolean isHorizontal = (Math.abs(swipeGesture.direction().getX()) > Math.abs(swipeGesture.direction().getY()));
+		          //Classify as right-left or up-down
+		          if(isHorizontal){
+		              if(swipeGesture.direction().getX() > 0){
+		                  System.out.println("right");
+		              } else {
+		            	  System.out.println("left");
+		              }
+		          } else { //vertical
+		              if(swipeGesture.direction().getY() > 0){
+		            	  System.out.println("up");
+		              } else {
+		            	  System.out.println("down");
+		              }                  
+		          }
+		       }
+		     }
+		  }
+		
 		if (!frame.fingers().isEmpty())
 		{
 			//Retrieve the front-most finger.
@@ -65,24 +106,25 @@ public class LeapaintListener extends Listener
 			position.setZ(normalizedBox.normalizePoint(frontMost.tipPosition()).getZ());
 			
 			//Scale coordinates to the resolution of the painter window.
-			position.setX(position.getX() * gamePlay.getBounds().width);
-			position.setY(position.getY() * gamePlay.getBounds().height);
+			position.setX(position.getX() * back.getBounds().width);
+			position.setY(position.getY() * back.getBounds().height);
 			
 			//Flip Y axis so that up is actually up, and not down.
 			position.setY(position.getY() * -1);
-			position.setY(position.getY() + gamePlay.getBounds().height);
+			position.setY(position.getY() + back.getBounds().height);
 			
-			System.out.println(frontMost.tipPosition().getX());
+			//System.out.println(frontMost.tipPosition().getX());
 			
 			//Pass the X/Y coordinates to the painter.
-			gamePlay.prevX = gamePlay.x;
-			gamePlay.prevY = gamePlay.y;
-			gamePlay.x = (int) position.getX();
-			gamePlay.y = (int) position.getY();
-			gamePlay.z = position.getZ();
+			//gamePlay.prevX = gamePlay.x;
+			//gamePlay.prevY = gamePlay.y;
+			//gamePlay.x = (int) position.getX();
+			//gamePlay.y = (int) position.getY();
+			//gamePlay.z = position.getZ();
 			
 			//Tell the painter to update.
 			//gamePlay.gb.draw();
+			back.repaint();
 		
 	}
 	

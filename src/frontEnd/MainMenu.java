@@ -1,6 +1,8 @@
 package frontEnd;
 
+import Leap.LeapaintListener;
 import entities.Directories;
+
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -11,6 +13,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import com.leapmotion.leap.Controller;
+import com.leapmotion.leap.Leap;
+import com.leapmotion.leap.Gesture;
 
 
 
@@ -46,92 +51,105 @@ public class MainMenu extends JFrame {
         back.add(cargar);
         back.add(salir);
         add(back);
-
-        repaint();
         
-        nuevo.addMouseListener(new MouseAdapter(){
+        LeapaintListener listener = new LeapaintListener(back);
+		Controller controller = new Controller();
+		//Start the listener.
+		controller.addListener(listener);
+		controller.enableGesture(Gesture.Type.TYPE_SWIPE);
+        
+		nuevo.addMouseListener(new MouseAdapter(){
 
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                        switch(e.getID()){
-                        case MouseEvent.MOUSE_CLICKED:
-                                setVisible(false);
-                try {
-                    MapSelection selectedMap = new MapSelection(Directories.boards);
-                    if(selectedMap.getInput() != null) {
-                        NameMenu nameMenu = new NameMenu();
-                        if(nameMenu.getName() != null) {
-                            path = selectedMap.getPath(selectedMap.getInput());
-                            new GamePlay(path, nameMenu.getName(), null);
-                            dispose();
-                        }
-                        else {
-                            new MainMenu();
-                        }
-
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                    switch(e.getID()){
+                    case MouseEvent.MOUSE_CLICKED:
+                            setVisible(false);
+            try {
+                MapSelection selectedMap = new MapSelection(Directories.boards);
+                if(selectedMap.getInput() != null) {
+                    NameMenu nameMenu = new NameMenu();
+                    if(nameMenu.getName() != null) {
+                        path = selectedMap.getPath(selectedMap.getInput());
+                        new GamePlay(path, nameMenu.getName(), null);
+                        dispose();
                     }
                     else {
                         new MainMenu();
                     }
 
-
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null, "Ocurrio un error al cargar el mapa. " +
-                            "No se pudieron leer los datos del jugador.", "Error",
-                            JOptionPane.ERROR_MESSAGE);
-
                 }
-                                dispose();
-                        }
+                else {
+                    new MainMenu();
                 }
-        });
 
-    cargar.addMouseListener(new MouseAdapter(){
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                        switch(e.getID()){
-                        case MouseEvent.MOUSE_CLICKED:
-                try {
-                    GameSelection selectedGame = new GameSelection(Directories.savegames);
-                    if(selectedGame.getInput() != null) {
-                        path = selectedGame.getPath(selectedGame.getInput());
-                        new GamePlay(selectedGame.getBoardPath(), "ASD", path);
-                        dispose();
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Ocurrio un error al cargar el mapa. " +
+                        "No se pudieron leer los datos del jugador.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+
+            }
+                            dispose();
                     }
-                    else {
-                         new MainMenu();
-                    }
-                    
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null,
-                    "Ocurrio un error al cargar la partida guardada.","Error",
-                    JOptionPane.ERROR_MESSAGE);
-                    
+            }
+    });
+
+cargar.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                    switch(e.getID()){
+                    case MouseEvent.MOUSE_CLICKED:
+            try {
+                GameSelection selectedGame = new GameSelection(Directories.savegames);
+                if(selectedGame.getInput() != null) {
+                    path = selectedGame.getPath(selectedGame.getInput());
+                    new GamePlay(selectedGame.getBoardPath(), "ASD", path);
+                    dispose();
                 }
-                        }
+                else {
+                     new MainMenu();
                 }
-        });
                 
-        
-        salir.addMouseListener(new MouseAdapter(){
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null,
+                "Ocurrio un error al cargar la partida guardada.","Error",
+                JOptionPane.ERROR_MESSAGE);
+                
+            }
+                    }
+            }
+    });
+            
+    
+    salir.addMouseListener(new MouseAdapter(){
 
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                        switch(e.getID()){
-                        case MouseEvent.MOUSE_CLICKED:
-                  System.exit(0);
-                        }
-                        
-                }
-        });
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                    switch(e.getID()){
+                    case MouseEvent.MOUSE_CLICKED:
+              System.exit(0);
+                    }
+                    
+            }
+    });
+		
+		
+		while(true){}
+
+		
+		
+		
+		/**
+        repaint();
         
         
-        
+
+        */
         }
         public static void main(String[] args) throws Exception {
                 MainMenu mainMenu = new MainMenu();
-
-        
+                
         }
         
 }

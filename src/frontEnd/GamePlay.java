@@ -51,10 +51,10 @@ public class GamePlay extends JFrame{
         centerScreen();
         refreshScreen();
         setGameEvents();
-        LeapaintListener listener = new LeapaintListener(this);
-		Controller controller = new Controller();
+        //LeapaintListener listener = new LeapaintListener(this);
+		//Controller controller = new Controller();
 		//Start the listener.
-		controller.addListener(listener);
+		//controller.addListener(listener);
         handleInput();
     }
     
