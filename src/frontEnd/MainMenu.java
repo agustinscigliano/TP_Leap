@@ -1,8 +1,5 @@
 package frontEnd;
 
-import Leap.LeapaintListener;
-import entities.Directories;
-
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -13,11 +10,12 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import Leap.LeapaintListener;
+
 import com.leapmotion.leap.Controller;
-import com.leapmotion.leap.Leap;
 import com.leapmotion.leap.Gesture;
 
-
+import entities.Directories;
 
 public class MainMenu extends JFrame {
 
