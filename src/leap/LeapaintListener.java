@@ -1,4 +1,4 @@
-package Leap;
+package leap;
 
 
 import javax.swing.JPanel;

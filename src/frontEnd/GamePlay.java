@@ -6,10 +6,11 @@ import java.io.IOException;
 
 import javax.swing.*;
 
+import leap.LeapaintListener;
+
 import com.leapmotion.leap.Controller;
 
 import parser.*;
-import Leap.LeapaintListener;
 import entities.*;
 import entities.saveAndLoad.Load;
 import entities.saveAndLoad.Save;

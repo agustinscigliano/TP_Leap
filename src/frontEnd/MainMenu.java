@@ -10,7 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import Leap.LeapaintListener;
+import leap.LeapaintListener;
 
 import com.leapmotion.leap.Controller;
 import com.leapmotion.leap.Gesture;
