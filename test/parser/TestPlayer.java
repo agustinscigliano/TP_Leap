@@ -1,7 +1,15 @@
 package parser;
-import entities.*;
-import org.junit.*;
 import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import entities.Dragon;
+import entities.Golem;
+import entities.HealthBonus;
+import entities.Player;
+import entities.Snake;
+import entities.StrengthBonus;
 
 public class TestPlayer {
     Player player;
