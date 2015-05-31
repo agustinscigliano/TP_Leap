@@ -48,6 +48,7 @@ public class MainMenu extends JFrame {
 		back.add(cargar);
 		back.add(salir);
 		add(back);
+		setVisible(true);
 
 		LeapaintListener listener = new LeapaintListener(back);
 		Controller controller = new Controller();
