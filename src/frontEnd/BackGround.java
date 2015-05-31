@@ -8,21 +8,23 @@ import javax.swing.JPanel;
 
 public class BackGround extends JPanel {
 
-    /**
-         * Construct a BackGround
-         */
-        public BackGround(){
-                setOpaque(false);
-                setLayout(null);
-        }
+	private static final Image image = Toolkit.getDefaultToolkit().getImage(
+			Directories.resources + "dungeonDoor.png");
+	
+	/**
+	 * Construct a BackGround
+	 */
+	public BackGround() {
+		setOpaque(false);
+		setLayout(null);
+	}
 
-    /**
-         * Draws the BackGround Image, taken from the resources folder
-         */
-        public void paint(Graphics g){
-                Image imagen = Toolkit.getDefaultToolkit().getImage(Directories.resources + "dungeonDoor.png");
-                g.drawImage(imagen, 0, 0, getSize().width, getSize().height, this);
-                super.paint(g );
-        }
+	/**
+	 * Draws the BackGround Image, taken from the resources folder
+	 */
+	public void paint(Graphics g) {
+		g.drawImage(image, 0, 0, getSize().width, getSize().height, this);
+		super.paint(g);
+	}
 
 }
