@@ -1,12 +1,27 @@
 package dungeon.desktop;
 
-import leap.MotionProvider;
+import javax.swing.SwingUtilities;
+
+import leap.LeapMotion;
+
+import com.leapmotion.leap.Controller;
+
+import ejemploLeap.LeapaintListener;
 import frontEnd.MainMenu;
 
 public class LeapMotionApp {
-	
+
 	public static void main(String[] args) throws Exception {
-		MainMenu mainMenu = new MainMenu();
-		new Thread(new MotionProvider());
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				MainMenu m = new MainMenu();
+				m.setVisible(true);
+			}
+		});
+		// Start the listener.
+		LeapMotion leap = LeapMotion.getInstance();
+		while (true) {
+		}
 	}
 }
