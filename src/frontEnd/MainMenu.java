@@ -1,7 +1,6 @@
 package frontEnd;
 
 import java.awt.AWTException;
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Robot;
@@ -11,7 +10,6 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
 
 import leap.LMButton;
 import leap.LeapMotion;
@@ -21,11 +19,11 @@ import leap.click.NewGameClick;
 import com.leapmotion.leap.Controller;
 import com.leapmotion.leap.Finger;
 import com.leapmotion.leap.Frame;
+import com.leapmotion.leap.Gesture;
 import com.leapmotion.leap.InteractionBox;
 import com.leapmotion.leap.Listener;
 import com.leapmotion.leap.Vector;
 
-import ejemploLeap.LeapButton;
 import entities.Directories;
 
 public class MainMenu extends JFrame {
@@ -176,21 +174,21 @@ public class MainMenu extends JFrame {
 	
 	private LMButton newGameButton(){
 		LMButton newButton = new LMButton("Nuevo Juego", new NewGameClick(this));
-		newButton.setBounds(20, 50, 130, 25);
+		newButton.setBounds(20, 50, 130, 50);
 		newButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		return newButton;
 	}
 	
 	private LMButton loadGameButton() {
 		LMButton loadButton = new LMButton("Cargar Juego", new LoadGameClick(this));
-		loadButton.setBounds(20, 150, 130, 25);
+		loadButton.setBounds(20, 150, 130, 50);
 		loadButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		return loadButton;
 	}
 	
 	private LMButton exitGameButton() {
 		LMButton exit = new LMButton("Salir", new NewGameClick(this));
-		exit.setBounds(20, 250, 130, 25);
+		exit.setBounds(20, 250, 130, 50);
 		exit.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		return exit;
 	}
@@ -218,6 +216,7 @@ public class MainMenu extends JFrame {
 
 		public void onConnect(Controller controller) {
 			System.out.println("Connected");
+			controller.enableGesture(Gesture.Type.TYPE_SCREEN_TAP);
 		}
 
 		public void onDisconnect(Controller controller) {
@@ -229,7 +228,6 @@ public class MainMenu extends JFrame {
 		}
 
 		public void onFrame(Controller controller) {
-
 			frame = controller.frame();
 			if (!frame.fingers().isEmpty()) {
 				Finger frontMost = frame.fingers().frontmost();
@@ -255,19 +253,24 @@ public class MainMenu extends JFrame {
 				
 				int x = (int) position.getX();
 				int y = (int) position.getY() - offset;
+				
 				System.out.println("[" + "X:" + x + " Y:" + y + "]");
-				System.out.println("fingers: " + frame.fingers().count());
-				if (mainMenu.newGame.getBigBounds().contains((int) position.getX(),
-						(int) position.getY() - offset))
-					mainMenu.newGame.doClick();
+				for (Gesture g : frame.gestures()) {
+					System.out.println(g.type());
+					if (g.type().equals(Gesture.Type.TYPE_SCREEN_TAP)) {
+						if (mainMenu.newGame.getBigBounds().contains((int) position.getX(),
+								(int) position.getY() - offset))
+							mainMenu.newGame.doClick();
 
-				if (mainMenu.loadGame.getBigBounds().contains((int) position.getX(),
-						(int) position.getY() - offset))
-					mainMenu.loadGame.doClick();
+						if (mainMenu.loadGame.getBigBounds().contains((int) position.getX(),
+								(int) position.getY() - offset))
+							mainMenu.loadGame.doClick();
 
-				if (mainMenu.exitGame.getBigBounds().contains((int) position.getX(),
-						(int) position.getY() - offset))
-					mainMenu.exitGame.doClick();
+						if (mainMenu.exitGame.getBigBounds().contains((int) position.getX(),
+								(int) position.getY() - offset))
+							mainMenu.exitGame.doClick();
+					}
+				}
 			}
 		}
 

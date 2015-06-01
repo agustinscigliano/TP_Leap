@@ -25,14 +25,14 @@ public class LMButton extends JButton {
 		Rectangle rect = getBounds();
 
 		// Increase height and width of the button.
-		rect.width = rect.width - 20;
-		rect.height = rect.height - 20;
+		rect.width = rect.width + 20;
+		rect.height = rect.height + 20;
 
 		// Reposition the button so that its central coordinates more or less
 		// remain the same.
-		rect.x = rect.x + 15;
-		rect.y = rect.y + 15;
-
+		rect.x = rect.x - 10;
+		rect.y = rect.y - 10;
+		System.out.println(rect);
 		// Return the new button size.
 		return rect;
 

@@ -1,5 +1,6 @@
 package leap;
 
+import com.leapmotion.leap.Config;
 import com.leapmotion.leap.Controller;
 import com.leapmotion.leap.Listener;
 
@@ -9,6 +10,8 @@ public enum LeapMotion {
 	private Controller controller;
     private LeapMotion() {
     	this.controller  = new Controller();
+    	Config config = this.controller.config();
+    	config.setFloat("Gesture.KeyTap.MinDownVelocity", 10);
     };
 
     public static LeapMotion getInstance() {
