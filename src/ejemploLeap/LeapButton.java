@@ -6,8 +6,7 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import javax.swing.JButton;
 
-public class LeapButton extends JButton
-{
+public class LeapButton extends JButton {
 	//Expanding state of the button.
 	private boolean expanding = false;
 	//Original button size.
