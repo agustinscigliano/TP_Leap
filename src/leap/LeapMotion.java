@@ -11,7 +11,7 @@ public enum LeapMotion {
 	INSTANCE;
     private LeapMotion() {};
 
-    public LeapMotion getInstance() {
+    public static LeapMotion getInstance() {
     	return INSTANCE;
     }
     
