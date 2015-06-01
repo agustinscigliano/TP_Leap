@@ -26,7 +26,6 @@ public class MainMenu extends JFrame {
 		setBounds(1, 1, 400, 400);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(true);
-		// setLayout(null);
 		BackGround back = new BackGround();
 
 		Toolkit toolkit = getToolkit();
@@ -34,15 +33,9 @@ public class MainMenu extends JFrame {
 		setLocation(size.width / 2 - getWidth() / 2, size.height / 2
 				- getHeight() / 2);
 
-		JButton nuevo = new JButton("Nuevo Juego");
-		nuevo.setBounds(20, 150, 130, 25);
-		nuevo.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		JButton cargar = new JButton("Cargar Juego");
-		cargar.setBounds(20, 190, 130, 25);
-		cargar.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		JButton salir = new JButton("Salir");
-		salir.setBounds(20, 230, 130, 25);
-		salir.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		JButton nuevo = newGameButton();
+		JButton cargar = loadGameButton();
+		JButton salir = exitGameButton();
 
 		back.add(nuevo);
 		back.add(cargar);
@@ -136,5 +129,28 @@ public class MainMenu extends JFrame {
 			}
 		});
 
+	
 	}
+	
+	private static JButton newGameButton(){
+		JButton newButton = new JButton("Nuevo Juego");
+		newButton.setBounds(20, 150, 130, 25);
+		newButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		return newButton;
+	}
+	
+	private static JButton loadGameButton() {
+		JButton loadButton = new JButton("Cargar Juego");
+		loadButton.setBounds(20, 190, 130, 25);
+		loadButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		return loadButton;
+	}
+	
+	private static JButton exitGameButton() {
+		JButton exit = new JButton("Salir");
+		exit.setBounds(20, 230, 130, 25);
+		exit.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		return exit;
+	}
+
 }
