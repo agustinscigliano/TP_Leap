@@ -230,6 +230,9 @@ public class MainMenu extends JFrame {
 		public void onFrame(Controller controller) {
 			frame = controller.frame();
 			if (!frame.fingers().isEmpty()) {
+				
+				
+				
 				Finger frontMost = frame.fingers().frontmost();
 				Vector position = frontMost.stabilizedTipPosition();
 				normalizedBox = frame.interactionBox();
@@ -249,12 +252,7 @@ public class MainMenu extends JFrame {
 				position.setY(position.getY() * -1);
 				position.setY(position.getY() + mainMenu.getBounds().height);
 
-				this.robot.mouseMove((int)position.getX(), (int)position.getY());	
 				
-				int x = (int) position.getX();
-				int y = (int) position.getY() - offset;
-				
-				System.out.println("[" + "X:" + x + " Y:" + y + "]");
 				for (Gesture g : frame.gestures()) {
 					System.out.println(g.type());
 					if (g.type().equals(Gesture.Type.TYPE_SCREEN_TAP)) {
@@ -271,6 +269,13 @@ public class MainMenu extends JFrame {
 							mainMenu.exitGame.doClick();
 					}
 				}
+				
+				this.robot.mouseMove((int)position.getX(), (int)position.getY());	
+				
+				int x = (int) position.getX();
+				int y = (int) position.getY() - offset;
+				
+				System.out.println("[" + "X:" + x + " Y:" + y + "]");
 			}
 		}
 
