@@ -70,6 +70,7 @@ public class MainMenu extends JFrame {
 							if (nameMenu.getName() != null) {
 								path = selectedMap.getPath(selectedMap
 										.getInput());
+								LeapMotion.getInstance().removeLeapListener(listener);
 								new GamePlay(path, nameMenu.getName(), null);
 								dispose();
 							} else {
@@ -150,6 +151,7 @@ public class MainMenu extends JFrame {
 				if (nameMenu.getName() != null) {
 					path = selectedMap.getPath(selectedMap
 							.getInput());
+					LeapMotion.getInstance().removeLeapListener(this.listener);
 					new GamePlay(path, nameMenu.getName(), null);
 					dispose();
 				} else {

@@ -1,26 +1,28 @@
 package frontEnd;
 
-import entities.Directories;
-import entities.ListFiles;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
+
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+
 import parser.FileException;
 import parser.ReadMapName;
+import entities.Directories;
+import entities.ListFiles;
 
 public class MapSelection {
 
 	private String input;
 	private String[] chooseMap, choices;
-	private HashMap<String, String> filesMap;
+	private Map<String, String> filesMap;
 
 	public MapSelection(String dirName) throws FileException,
 			FileNotFoundException, IOException {
 
-		filesMap = new HashMap();
+		filesMap = new HashMap<String, String>();
 		ListFiles file = new ListFiles(dirName, ".board");
 		choices = file.getFiles();
 		chooseMap = new String[choices.length];
@@ -49,4 +51,5 @@ public class MapSelection {
 				chooseMap[0]);
 
 	}
+
 }

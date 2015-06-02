@@ -1,6 +1,8 @@
 package frontEnd;
 
+import java.awt.AWTException;
 import java.awt.Dimension;
+import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +18,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
+import leap.LeapMotion;
 import parser.CellIsNotEmpty;
 import parser.ErrorReadingBoard;
 import parser.ErrorReadingBonus;
@@ -27,6 +30,7 @@ import parser.MissingHero;
 import parser.Parser;
 
 import com.leapmotion.leap.Controller;
+import com.leapmotion.leap.Finger;
 import com.leapmotion.leap.Frame;
 import com.leapmotion.leap.Gesture;
 import com.leapmotion.leap.InteractionBox;
@@ -57,7 +61,8 @@ public class GamePlay extends JFrame {
 	public int prevX = -1, prevY = -1;
 	public int x = -1, y = -1;
 	public double z = -1;
-
+	private Listener listener;
+	
 	/**
 	 * Generates a new game panel and adds all events for interaction.
 	 * 
@@ -87,9 +92,8 @@ public class GamePlay extends JFrame {
 		setGameEvents();
 		handleInput();
 
-		SwipeListener listener = new SwipeListener(this);
-		Controller controller = new Controller();
-		controller.addListener(listener);
+		this.listener = new SwipeListener(this, this.gb);
+		LeapMotion.getInstance().addLeapListener(this.listener);
 	}
 
 	@SuppressWarnings("unused")
@@ -376,10 +380,12 @@ public class GamePlay extends JFrame {
 
 	private static class SwipeListener extends Listener {
 
-		private final GamePlay gamePlay;
+		private final GamePlay gp;
+		private final GraphicBoard gb;
 
-		public SwipeListener(final GamePlay gamePlay) {
-			this.gamePlay = gamePlay;
+		public SwipeListener(final GamePlay gp, final GraphicBoard gb) {
+			this.gp = gp;
+			this.gb = gb;
 		}
 
 		// Controller data frame.
@@ -405,27 +411,14 @@ public class GamePlay extends JFrame {
 		}
 
 		public void onFrame(Controller controller) {
-
-			// Get the most recent frame.
 			frame = controller.frame();
-			// Detect if fingers are present.
-			// System.out.println("dasd");
-
 			frame.gestures();
 
 			if (!frame.gestures().isEmpty()) {
 				for (int i = 0; i < frame.gestures().count(); i++) {
 					Gesture gesture = frame.gestures().get(i);
-					System.out.println(gesture.type());
 					if (gesture.type() == Gesture.Type.TYPE_SWIPE) {
 						SwipeGesture swipeGesture = new SwipeGesture(gesture);
-
-						Vector swipeVector = swipeGesture.direction();
-						System.out.println("swipeVector : " + swipeVector);
-
-						float swipeDirection = swipeVector.getX();
-						System.out.println(swipeDirection);
-
 						// Classify swipe as either horizontal or vertical
 						boolean isHorizontal = (Math.abs(swipeGesture
 								.direction().getX()) > Math.abs(swipeGesture
@@ -433,22 +426,21 @@ public class GamePlay extends JFrame {
 						// Classify as right-left or up-down
 						if (isHorizontal) {
 							if (swipeGesture.direction().getX() > 0) {
-								System.out.println("right");
+								gb.movePlayerEast();
 							} else {
-								System.out.println("left");
+								gb.movePlayerWest();
 							}
 						} else { // vertical
 							if (swipeGesture.direction().getY() > 0) {
-								System.out.println("up");
+								gb.movePlayerNorth();
 							} else {
-								System.out.println("down");
+								gb.movePlayerSouth();
 							}
 						}
 					}
 				}
+				this.gp.refreshScreen();
 			}
 		}
-
 	}
-
 }
