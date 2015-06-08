@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 
 import leap.LMButton;
 import leap.LeapMotion;
+import leap.click.ExitGameClick;
 import leap.click.LoadGameClick;
 import leap.click.NewGameClick;
 
@@ -36,7 +37,7 @@ public class MainMenu extends JFrame {
 	
 	public MainMenu() {
 		setTitle("DesktopDungeons");
-		setBounds(1, 1, 400, 400);
+		setBounds(1, 1, 600, 600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(true);
 		back = new BackGround();
@@ -47,11 +48,11 @@ public class MainMenu extends JFrame {
 //				- getHeight() / 2);
 
 		newGame = newGameButton();
-		loadGame = loadGameButton();
+		//loadGame = loadGameButton();
 		exitGame = exitGameButton();
 
 		back.add(newGame);
-		back.add(loadGame);
+		//back.add(loadGame);
 		back.add(exitGame);
 		add(back);
 
@@ -66,17 +67,11 @@ public class MainMenu extends JFrame {
 						MapSelection selectedMap = new MapSelection(
 								Directories.boards);
 						if (selectedMap.getInput() != null) {
-							NameMenu nameMenu = new NameMenu();
-							if (nameMenu.getName() != null) {
 								path = selectedMap.getPath(selectedMap
 										.getInput());
 								LeapMotion.getInstance().removeLeapListener(listener);
-								new GamePlay(path, nameMenu.getName(), null);
-								dispose();
-							} else {
-								new MainMenu();
-							}
-
+								new GamePlay(path, "Player", null);
+								dispose(); 
 						} else {
 							new MainMenu();
 						}
@@ -95,34 +90,34 @@ public class MainMenu extends JFrame {
 			}
 		});
 
-		loadGame.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				switch (e.getID()) {
-				case MouseEvent.MOUSE_CLICKED:
-					try {
-						GameSelection selectedGame = new GameSelection(
-								Directories.savegames);
-						if (selectedGame.getInput() != null) {
-							path = selectedGame.getPath(selectedGame.getInput());
-							new GamePlay(selectedGame.getBoardPath(), "ASD",
-									path);
-							dispose();
-						} else {
-							new MainMenu();
-						}
-
-					} catch (Exception ex) {
-						JOptionPane
-								.showMessageDialog(
-										null,
-										"Ocurrio un error al cargar la partida guardada.",
-										"Error", JOptionPane.ERROR_MESSAGE);
-
-					}
-				}
-			}
-		});
+//		loadGame.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseClicked(MouseEvent e) {
+//				switch (e.getID()) {
+//				case MouseEvent.MOUSE_CLICKED:
+//					try {
+//						GameSelection selectedGame = new GameSelection(
+//								Directories.savegames);
+//						if (selectedGame.getInput() != null) {
+//							path = selectedGame.getPath(selectedGame.getInput());
+//							new GamePlay(selectedGame.getBoardPath(), "ASD",
+//									path);
+//							dispose();
+//						} else {
+//							new MainMenu();
+//						}
+//
+//					} catch (Exception ex) {
+//						JOptionPane
+//								.showMessageDialog(
+//										null,
+//										"Ocurrio un error al cargar la partida guardada.",
+//										"Error", JOptionPane.ERROR_MESSAGE);
+//
+//					}
+//				}
+//			}
+//		});
 
 		exitGame.addMouseListener(new MouseAdapter() {
 
@@ -136,7 +131,7 @@ public class MainMenu extends JFrame {
 			}
 		});
 
-		// Fuck you garbage collector
+
 		this.listener = new MainMenuListener(this);
 		LeapMotion.getInstance().addLeapListener(listener);
 	}
@@ -147,19 +142,14 @@ public class MainMenu extends JFrame {
 			MapSelection selectedMap = new MapSelection(
 					Directories.boards);
 			if (selectedMap.getInput() != null) {
-				NameMenu nameMenu = new NameMenu();
-				if (nameMenu.getName() != null) {
-					System.out.println(path);
+				
 					path = selectedMap.getPath(selectedMap
 							.getInput());
 					LeapMotion.getInstance().removeLeapListener(this.listener);
-					new GamePlay(path, nameMenu.getName(), null);
+					new GamePlay(path,"Player", null);
 					dispose();
-				} else {
-					new MainMenu();
 				}
-
-			} else {
+			else {
 				new MainMenu();
 			}
 
@@ -177,21 +167,21 @@ public class MainMenu extends JFrame {
 	
 	private LMButton newGameButton(){
 		LMButton newButton = new LMButton("Nuevo Juego", new NewGameClick(this));
-		newButton.setBounds(20, 50, 130, 50);
+		newButton.setBounds(30, 150, 180, 100);
 		newButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		return newButton;
 	}
 	
-	private LMButton loadGameButton() {
-		LMButton loadButton = new LMButton("Cargar Juego", new LoadGameClick(this));
-		loadButton.setBounds(20, 150, 130, 50);
-		loadButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		return loadButton;
-	}
+//	private LMButton loadGameButton() {
+//		LMButton loadButton = new LMButton("Cargar Juego", new LoadGameClick(this));
+//		loadButton.setBounds(20, 150, 130, 50);
+//		loadButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+//		return loadButton;
+//	}
 	
 	private LMButton exitGameButton() {
-		LMButton exit = new LMButton("Salir", new NewGameClick(this));
-		exit.setBounds(20, 250, 130, 50);
+		LMButton exit = new LMButton("Salir", new ExitGameClick(this));
+		exit.setBounds(30, 350, 180, 100);
 		exit.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		return exit;
 	}
@@ -260,16 +250,13 @@ public class MainMenu extends JFrame {
 					System.out.println(g.type());
 					if (g.type().equals(Gesture.Type.TYPE_SCREEN_TAP)) {
 						if (mainMenu.newGame.getBigBounds().contains((int) position.getX(),
-								(int) position.getY() - offset))
+								(int) position.getY())) {
 							mainMenu.newGame.doClick();
-
-						if (mainMenu.loadGame.getBigBounds().contains((int) position.getX(),
-								(int) position.getY() - offset))
-							mainMenu.loadGame.doClick();
-
+						}
 						if (mainMenu.exitGame.getBigBounds().contains((int) position.getX(),
-								(int) position.getY() - offset))
+								(int) position.getY())) {
 							mainMenu.exitGame.doClick();
+						}
 					}
 				}
 				
@@ -278,7 +265,7 @@ public class MainMenu extends JFrame {
 				int x = (int) position.getX();
 				int y = (int) position.getY() - offset;
 				
-				System.out.println("[" + "X:" + x + " Y:" + y + "]");
+				//System.out.println("[" + "X:" + x + " Y:" + y + "]");
 			}
 		}
 

@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 public class BackGround extends JPanel {
 
 	private static final Image image = Toolkit.getDefaultToolkit().getImage(
-			Directories.resources + "dungeonDoor.png");
+			Directories.resources + "dunge3onDoor.png");
 	
 	/**
 	 * Construct a BackGround
