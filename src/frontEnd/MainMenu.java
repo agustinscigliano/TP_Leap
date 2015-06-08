@@ -149,6 +149,7 @@ public class MainMenu extends JFrame {
 			if (selectedMap.getInput() != null) {
 				NameMenu nameMenu = new NameMenu();
 				if (nameMenu.getName() != null) {
+					System.out.println(path);
 					path = selectedMap.getPath(selectedMap
 							.getInput());
 					LeapMotion.getInstance().removeLeapListener(this.listener);

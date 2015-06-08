@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -62,6 +63,7 @@ public class GamePlay extends JFrame {
 	public int x = -1, y = -1;
 	public double z = -1;
 	private Listener listener;
+	private static long now = new Date().getTime();
 	
 	/**
 	 * Generates a new game panel and adds all events for interaction.
@@ -414,7 +416,8 @@ public class GamePlay extends JFrame {
 			frame = controller.frame();
 			frame.gestures();
 
-			if (!frame.gestures().isEmpty()) {
+			if (!frame.gestures().isEmpty() && (now+1000<new Date().getTime())) {
+				now = new Date().getTime();
 				for (int i = 0; i < frame.gestures().count(); i++) {
 					Gesture gesture = frame.gestures().get(i);
 					if (gesture.type() == Gesture.Type.TYPE_SWIPE) {

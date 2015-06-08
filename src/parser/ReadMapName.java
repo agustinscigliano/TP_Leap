@@ -11,10 +11,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-/**
- *
- * @author mpurita
- */
+
+
 public class ReadMapName{
     private String line;
     private BufferedReader inStream;
