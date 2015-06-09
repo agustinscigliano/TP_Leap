@@ -10,7 +10,6 @@ public class NewGameClick implements Click{
 		this.menu = menu;
 	}
 	
-	@Override
 	public void doClick() {
 		this.menu.newGame();
 	}

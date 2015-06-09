@@ -15,7 +15,6 @@ public class LoadGameClick implements Click {
 		this.menu = menu;
 	}
 
-	@Override
 	public void doClick() {
 		try {
 			GameSelection selectedGame = new GameSelection(

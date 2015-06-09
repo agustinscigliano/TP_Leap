@@ -11,7 +11,6 @@ public class ExitGameClick implements Click {
 		this.menu = menu;
 	}
 
-	@Override
 	public void doClick() {
 		System.exit(0);
 	}

@@ -168,7 +168,6 @@ public class GraphicBoard extends Board{
     /*Clase interna para el evento de mover el mouse por el panel*/
     private class BaseGamePanelListener implements GamePanelListener {
         
-        @Override
         public void onMouseMoved(int row, int column) {
             Vector2D p = new Vector2D(row,column);
             if(getEnemy(p) != null && isRevealedCell(p) && !getEnemy(p).isDead()){
