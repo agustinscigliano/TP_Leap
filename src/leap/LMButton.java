@@ -6,6 +6,7 @@ import javax.swing.JButton;
 
 import leap.click.Click;
 
+@SuppressWarnings("serial")
 public class LMButton extends JButton {
 
 	private Click click;
