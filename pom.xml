@@ -4,7 +4,11 @@
 	<groupId>TP_Leap</groupId>
 	<artifactId>TP_Leap</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-
+	
+	<properties>
+		<leap.motion>../LeapDeveloperKit_2.2.5+26752_mac/LeapSDK/lib/LeapJava.jar</leap.motion>
+	</properties>
+	
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -23,6 +27,15 @@
 			<artifactId>commons-cli</artifactId>
 			<version>1.2</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>leap.motion</groupId>
+			<artifactId>leap.motion</artifactId>
+			<scope>system</scope>
+			<version>0.1</version>
+			<systemPath>${project.basedir}/${leap.motion}</systemPath>
+		</dependency>
+		
 	</dependencies>
 
 	<build>
