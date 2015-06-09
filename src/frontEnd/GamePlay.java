@@ -1,8 +1,6 @@
 package frontEnd;
 
-import java.awt.AWTException;
 import java.awt.Dimension;
-import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,13 +29,10 @@ import parser.MissingHero;
 import parser.Parser;
 
 import com.leapmotion.leap.Controller;
-import com.leapmotion.leap.Finger;
 import com.leapmotion.leap.Frame;
 import com.leapmotion.leap.Gesture;
-import com.leapmotion.leap.InteractionBox;
 import com.leapmotion.leap.Listener;
 import com.leapmotion.leap.SwipeGesture;
-import com.leapmotion.leap.Vector;
 
 import entities.Bonus;
 import entities.Directories;
@@ -52,11 +47,12 @@ import entities.saveAndLoad.Save;
 /**
  * Contains all methods necessary for playing the game.
  * 
- * @author mpurita, gdelgiud, ppauli
+ * @author mpurita, gdelgiud, ppauli, ascigliano, fmenzella
  *
  */
 public class GamePlay extends JFrame {
 
+	private static final long serialVersionUID = -6204592503797412931L;
 	public final GraphicBoard gb = new GraphicBoard();
 	private StatusPanel sp;
 	public int prevX = -1, prevY = -1;
@@ -392,8 +388,6 @@ public class GamePlay extends JFrame {
 
 		// Controller data frame.
 		public Frame frame;
-		// Leap interaction box.
-		private InteractionBox normalizedBox;
 
 		public void onInit(Controller controller) {
 			System.out.println("Initialized");
