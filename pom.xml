@@ -1,14 +1,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>TP_Leap</groupId>
-	<artifactId>TP_Leap</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	
+	<groupId>ldd</groupId>
+	<artifactId>ldd</artifactId>
+	<version>0.1</version>
+	<name>ldd</name>
+
 	<properties>
 		<leap.motion>../LeapDeveloperKit_2.2.5+26752_mac/LeapSDK/lib/LeapJava.jar</leap.motion>
+		<main-class-name>dungeon.desktop.LeapMotionApp</main-class-name>
+		<leap.native>/Users/fmenzella/Desktop/Facundo/ITBA/AHCI/LeapDeveloperKit_2.2.5+26752_mac/LeapSDK/lib</leap.native>
+
 	</properties>
-	
+
 	<dependencies>
 
 		<dependency>
@@ -22,15 +26,13 @@
 			<artifactId>commons-cli</artifactId>
 			<version>1.2</version>
 		</dependency>
-		
+
 		<dependency>
-			<groupId>leap.motion</groupId>
+			<groupId>com.leap.motion</groupId>
 			<artifactId>leap.motion</artifactId>
-			<scope>system</scope>
-			<version>0.1</version>
-			<systemPath>${project.basedir}/${leap.motion}</systemPath>
+			<version>2.2.6.29154</version>
 		</dependency>
-		
+
 	</dependencies>
 
 	<build>
@@ -46,12 +48,27 @@
 		</resources>
 		<plugins>
 			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<archive>
+						<manifest>
+							<mainClass>${main-class-name}</mainClass>
+						</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
 				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id> <!-- this is used for inheritance merges -->
+						<phase>package</phase> <!-- bind to the packaging phase -->
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
