@@ -25,3 +25,6 @@ dependency-reduced-pom.xml
 # Logs
 *.log
 /bin/
+
+# MAC OS #
+*DS_Store
