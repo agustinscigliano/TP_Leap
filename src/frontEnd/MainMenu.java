@@ -2,9 +2,7 @@ package frontEnd;
 
 import java.awt.AWTException;
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.Robot;
-import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -31,7 +29,6 @@ public class MainMenu extends JFrame {
 
 	private String path;
 	private Listener listener;
-	private static int offset = 50;
 	private LMButton newGame, exitGame;
 	private BackGround back;
 	
