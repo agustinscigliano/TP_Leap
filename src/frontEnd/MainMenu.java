@@ -14,7 +14,6 @@ import javax.swing.JOptionPane;
 import leap.LMButton;
 import leap.LeapMotion;
 import leap.click.ExitGameClick;
-import leap.click.LoadGameClick;
 import leap.click.NewGameClick;
 
 import com.leapmotion.leap.Controller;
@@ -27,12 +26,13 @@ import com.leapmotion.leap.Vector;
 
 import entities.Directories;
 
+@SuppressWarnings("serial")
 public class MainMenu extends JFrame {
 
 	private String path;
 	private Listener listener;
 	private static int offset = 50;
-	private LMButton newGame, loadGame, exitGame;
+	private LMButton newGame, exitGame;
 	private BackGround back;
 	
 	public MainMenu() {
@@ -42,17 +42,10 @@ public class MainMenu extends JFrame {
 		setResizable(true);
 		back = new BackGround();
 
-		Toolkit toolkit = getToolkit();
-		Dimension size = toolkit.getScreenSize();
-//		setLocation(size.width / 2 - getWidth() / 2, size.height / 2
-//				- getHeight() / 2);
-
 		newGame = newGameButton();
-		//loadGame = loadGameButton();
 		exitGame = exitGameButton();
 
 		back.add(newGame);
-		//back.add(loadGame);
 		back.add(exitGame);
 		add(back);
 
@@ -89,35 +82,6 @@ public class MainMenu extends JFrame {
 				}
 			}
 		});
-
-//		loadGame.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mouseClicked(MouseEvent e) {
-//				switch (e.getID()) {
-//				case MouseEvent.MOUSE_CLICKED:
-//					try {
-//						GameSelection selectedGame = new GameSelection(
-//								Directories.savegames);
-//						if (selectedGame.getInput() != null) {
-//							path = selectedGame.getPath(selectedGame.getInput());
-//							new GamePlay(selectedGame.getBoardPath(), "ASD",
-//									path);
-//							dispose();
-//						} else {
-//							new MainMenu();
-//						}
-//
-//					} catch (Exception ex) {
-//						JOptionPane
-//								.showMessageDialog(
-//										null,
-//										"Ocurrio un error al cargar la partida guardada.",
-//										"Error", JOptionPane.ERROR_MESSAGE);
-//
-//					}
-//				}
-//			}
-//		});
 
 		exitGame.addMouseListener(new MouseAdapter() {
 
@@ -171,13 +135,6 @@ public class MainMenu extends JFrame {
 		newButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		return newButton;
 	}
-	
-//	private LMButton loadGameButton() {
-//		LMButton loadButton = new LMButton("Cargar Juego", new LoadGameClick(this));
-//		loadButton.setBounds(20, 150, 130, 50);
-//		loadButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-//		return loadButton;
-//	}
 	
 	private LMButton exitGameButton() {
 		LMButton exit = new LMButton("Salir", new ExitGameClick(this));
@@ -261,11 +218,6 @@ public class MainMenu extends JFrame {
 				}
 				
 				this.robot.mouseMove((int)position.getX(), (int)position.getY());	
-				
-				int x = (int) position.getX();
-				int y = (int) position.getY() - offset;
-				
-				//System.out.println("[" + "X:" + x + " Y:" + y + "]");
 			}
 		}
 
