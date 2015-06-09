@@ -3,10 +3,6 @@ package dungeon.desktop;
 import javax.swing.SwingUtilities;
 
 import leap.LeapMotion;
-
-import com.leapmotion.leap.Controller;
-
-import ejemploLeap.LeapaintListener;
 import frontEnd.MainMenu;
 
 public class LeapMotionApp {
