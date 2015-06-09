@@ -4,6 +4,7 @@ import frontEnd.MainMenu;
 
 public class ExitGameClick implements Click {
 
+	@SuppressWarnings("unused")
 	private MainMenu menu;
 
 	public ExitGameClick(final MainMenu menu) {
