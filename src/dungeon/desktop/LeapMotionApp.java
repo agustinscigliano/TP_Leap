@@ -16,7 +16,7 @@ public class LeapMotionApp {
 			}
 		});
 		// Start the listener.
-		LeapMotion leap = LeapMotion.getInstance();
+		LeapMotion.getInstance();
 		while (true) {
 		}
 	}
